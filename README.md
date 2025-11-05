@@ -102,5 +102,9 @@ To install a binary:
 
 Distributed under the MS-PL license. See [license](license.md) for more information.
 
+## Notes and Changes by Holger Lembke
 
+++ open last
+ii https://github.com/ical-org/ical.net
+       https://github.com/ical-org/ical.net/wiki
 

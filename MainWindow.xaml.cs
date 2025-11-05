@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -48,12 +49,25 @@ namespace XstReader
                 this.Height = Properties.Settings.Default.Height;
                 this.Width = Properties.Settings.Default.Width;
             }
+            if ((Properties.Settings.Default.LastOpenFile!="") && (!System.IO.File.Exists(Properties.Settings.Default.LastOpenFile)))
+            {
+                btnOpenLast.ToolTip = Properties.Settings.Default.LastOpenFile;
+            }
+            else
+            {
+                btnOpenLast.IsEnabled = false;
+            }
         }
 
         public void OpenFile(string fileName)
         {
             if (!System.IO.File.Exists(fileName))
+            {
                 return;
+            }
+
+            Properties.Settings.Default.LastOpenFile = fileName;
+            Properties.Settings.Default.Save();
 
             view.Clear();
             ShowStatus("Loading...");
@@ -109,6 +123,11 @@ namespace XstReader
 
             if (fileName != null)
                 OpenFile(fileName);
+        }
+
+        private void btnOpenLast_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFile(Properties.Settings.Default.LastOpenFile);
         }
 
         private void exportAllProperties_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -961,5 +980,6 @@ namespace XstReader
 
             MessageBox.Show(msg.ToString(), "About XstReader");
         }
+
     }
 }
